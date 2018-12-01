@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition>
+	<div class="container" style="width: 800px">
+		<div class="col-md-12">
+		
+			<h:form role="form" id="formFact">
+			<p:growl id="msgs" showDetail="true" />
+			<div class="col-md-12">
+			
+					
+        			<h:panelGrid columns="1" cellpadding="5" display="inline-block">
+        				<p:outputLabel value="Cliente: " />
+        					<p:selectOneMenu id="cliente" value="#{productoFormBean.idCli}" >
+            					<f:selectItems value="#{productoFormBean.clientesV}"  var="c" itemLabel="#{c.nombre}  #{c.apellido}" itemValue="#{c.idCliente}" />
+            					<p:ajax listener="#{productoFormBean.clienteChange}" process=":tabGeneral:formFact:cliente"/>
+        					</p:selectOneMenu>
+        			</h:panelGrid>
+				</div>
+			</h:form>
+		
+		
+			<h:form role="form" id="formVentas">
+				<p:growl id="msgs" showDetail="true" />
+				<div class="col-md-12">
+
+					<h:panelGrid columns="1" cellpadding="5">
+						<p:commandButton value="Carrito de compras" icon="ui-icon-cart"
+							type="button" onclick="PF('crt').show()"
+							/>
+					</h:panelGrid>
+
+
+					<p:dataTable id="ventastabla" var="producto" paginator="true"
+						rows="10" value="#{productoFormBean.productoVentasList}" editable="false"
+						filteredValue="#{productoFormBean.filteredProductoVentasList}"
+						widgetVar="ventasWidget"
+						emptyMessage="No se encontraron productos">
+
+						<f:facet name="header">
+	    					Tabla de productos
+	    				</f:facet>
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Búsqueda:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('ventasWidget').filter()" style="width:200px"
+									placeholder="Ingrese la búsqueda..." />
+							</p:outputPanel>
+						</f:facet>
+
+
+
+
+						<p:column headerText="Nombre" filterBy="#{producto.nombre}"
+							filterStyle="display:none" filterMatchMode="contains">
+							<f:facet name="header"> Nombre</f:facet>
+							#{producto.nombre}
+					</p:column>
+
+						<p:column headerText="Precio" filterBy="#{producto.precio}"
+							filterStyle="display:none" filterMatchMode="contains"
+							style="width:20%">
+							<h:outputText value="#{producto.precio}">
+								<f:convertNumber currencySymbol="$" type="currency" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Stock" filterBy="#{producto.stock}"
+							filterStyle="display:none" filterMatchMode="contains"
+							style="width:10%">
+							<h:outputText value="#{producto.stock}" />
+						</p:column>
+
+						<p:column headerText="Agregar a lista de compra"
+							style="text-align:center;width:20%">
+							<p:commandButton id="cantcarro"
+								actionListener="#{productoFormBean.agregarCarrito(producto)}"
+								icon="ui-icon-cart"
+								value="#{productoFormBean.getCantidadProd(producto)}" readonly="true"
+								update=":tabGeneral:modcar,ventastabla,:tabGeneral:formVentas:msgs" />
+						</p:column>
+
+					</p:dataTable>
+				</div>
+			</h:form>
+
+
+
+
+			<p:dialog id="modcar" header="Carrito de compras" widgetVar="crt"
+				modal="true" height="400">
+				<div class="col-md-12">
+					<h:form id="formcart">
+						<p:dataTable id="carrotabla" var="prodcarro" paginator="true"
+							rows="5" value="#{productoFormBean.carritoProductoList}"
+							editable="false"
+							emptyMessage="No hay productos en el carrito de compra">
+
+							<f:facet name="header">
+	    						Carrito de compra
+	    					</f:facet>
+
+							<p:column headerText="Nombre" filterBy="#{prodcarro.nombre}"
+								filterStyle="display:none" filterMatchMode="contains">
+								<h:outputText value="#{prodcarro.nombre}" />
+							</p:column>
+
+							<p:column headerText="Precio" filterBy="#{prodcarro.precio}"
+								filterStyle="display:none" filterMatchMode="contains">
+								<h:outputText value="#{prodcarro.precio}">
+									<f:convertNumber currencySymbol="$" type="currency" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Eliminar"
+								style="text-align:center;width:10%">
+								<p:commandButton
+									actionListener="#{productoFormBean.eliminarCarrito(prodcarro)}"
+									icon="ui-icon-closethick"
+									update=":tabGeneral:formcart:carrotabla,:tabGeneral:formVentas:ventastabla,:tabGeneral:formcart:total,:tabGeneral:formVentas:msgs" />
+							</p:column>
+
+						</p:dataTable>
+
+						<h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+							<h:outputLabel for="Total" value="Total:" />
+							<p:inplace id="total">
+								<p:inputText value="#{productoFormBean.total}" readonly="true"
+									disabled="true" />
+							</p:inplace>
+
+							<p:commandButton value="Cobrar" id="cobrar"
+								update=":tabGeneral:formVentas:ventastabla,:tabGeneral:formcart:carrotabla,:tabGeneral:formcart:total,:tabGeneral:formFact:msgs, :tabGeneral:formcart:facturaVenta"
+								actionListener="#{productoFormBean.cobrarProductos}"
+								styleClass="ui-priority-primary" />
+						</h:panelGrid>
+						<br/>
+						
+						<h3>Imprimir ticket</h3>
+						
+						<b:dataTable id="facturaVenta" var="prodcarro" paginator="true"
+							rows="5" value="#{productoFormBean.productoFacturaImprimir}"
+							editable="false" pdf="true" info="false" searching="false"
+							paginated="false"
+							emptyMessage="No hay productos por cobrar">
+							
+							
+							<b:dataTableColumn headerText="Nombre" filterBy="#{prodcarro.nombre}"
+								filterStyle="display:none">
+								<f:facet name="header"> Nombre</f:facet>
+								#{prodcarro.nombre}
+							</b:dataTableColumn>
+
+							<b:dataTableColumn headerText="Precio" filterBy="#{prodcarro.precio}"
+								filterStyle="display:none">
+								<f:facet name="header"> Precio</f:facet>
+								<h:outputText value="#{prodcarro.precio}">
+									<f:convertNumber currencySymbol="$" type="currency" />
+								</h:outputText>
+							</b:dataTableColumn>
+							
+							
+						</b:dataTable>
+						<br />
+						<b:commandButton value="Salir" id="limpiarTicket"
+								update=":tabGeneral:formcart:facturaVenta"
+								actionListener="#{productoFormBean.limpiaTicket}"
+								look="primary" ajax="true"
+								onclick="PF('crt').hide();" />
+						
+					</h:form>
+				</div>
+			</p:dialog>
+
+		</div>
+	</div>
+</ui:composition>
+</html>

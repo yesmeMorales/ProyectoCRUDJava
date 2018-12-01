@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<mapper resource="edu/utm/bd/mappers/VendedorMapper.xml"/>
+		<mapper resource="edu/utm/bd/mappers/ClienteMapper.xml"/>
+		<mapper resource="edu/utm/bd/mappers/FacturaMapper.xml"/>
+		<mapper resource="edu/utm/bd/mappers/DetalleMapper.xml"/>
+		<mapper resource="edu/utm/bd/mappers/ProductoMapper.xml"/>
+	</mappers>
+</configuration>

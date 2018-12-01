@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition>
+	<div class="container">
+		<div class="col-md-12">
+			<b:form role="form" id="formReporteDia">
+				
+				<div class="form-group">
+					  <h2>Reporte por día</h2>
+					<br/>
+					<div class="form-group">
+					<b:datepicker id="fechad" placeholder="Seleccione fecha"
+						mode="popup" tooltip="click para seleccionar fecha"
+						large-screen="one-third" value="#{reporteFormBean.fechaInicio}" />
+					
+					
+					<b:commandButton look="primary" id="btnReporteDia" value="Generar"
+						actionListener="#{reporteFormBean.reporteDia}"
+						update=":tabGeneral:formReporteDia:reporteTable, :tabGeneral:formReporteDia:montoDia">
+					</b:commandButton>
+					
+				</div>
+				<b:inputText id="montoDia" large-screen="one-third"
+							 render-attribute="true" label="Ganancias" disabled="true"
+				             display="inline-block" value="#{reporteFormBean.gananciasDia}">
+				             	<f:convertNumber currencySymbol="$" type="currency"/>
+				             </b:inputText>
+					<br />
+				</div>
+
+
+
+				<b:dataTable value="#{reporteFormBean.facturasDia}" var="reporteDia"
+					id="reporteTable" headerClass="order-table-header"
+					rowClasses="order-table-add-row.order-table-event-row"
+					styleClass="table table-hover" searching="false" pdf="true">
+
+					<b:dataTableColumn style="text-align:center;width:20%">
+						<f:facet name="header" style="background:#3d79db"> Cliente</f:facet>
+							#{reporteDia.client}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn>
+						<f:facet name="header" style="background:#3d79db"> Vendedor</f:facet>
+							#{reporteDia.vendedo}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn>
+						<f:facet name="header" style="background:#3d79db"> Producto</f:facet>
+							#{reporteDia.productoDatos.nombre}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header" style="background:#3d79db"> Precio</f:facet>
+							#{reporteDia.productoDatos.precio}
+					</b:dataTableColumn>
+					
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header" style="background:#3d79db"> Precio compra</f:facet>
+							#{reporteDia.productoDatos.precioCompra}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header" style="background:#3d79db"> Cantidad</f:facet>
+							#{reporteDia.detalleDatos.cantidad}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header" style="background-color:#3d79db"> Monto</f:facet>
+							#{reporteDia.detalleDatos.monto}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn>
+
+						<f:facet name="header"> Fecha</f:facet>
+							<h:outputText value="#{reporteDia.fecha}">
+							<f:convertDateTime pattern = "dd-MMMMM-yyyy" />
+							</h:outputText>
+							
+					</b:dataTableColumn>
+				</b:dataTable>
+				
+				
+			</b:form>
+			
+			<b:form role="form" id="formReporteSemana">
+				<div class="form-group">
+					<h2>Reporte por semana</h2>
+						<br />
+						<div class="form-group">
+					    <b:datepicker id="fechai" large-screen="one-third" 
+					    mode="popup" tooltip="click para seleccionar fecha"
+					    value="#{reporteFormBean.fechaIni}" />
+
+					
+					    <b:datepicker id="fechaf" large-screen="one-third"
+					    mode="popup" tooltip="click para seleccionar fecha" 
+					    value="#{reporteFormBean.fechaFin}" />
+
+					    <b:commandButton id="btnReporteSemana" value="Generar"
+						   look="primary"
+						   actionListener="#{reporteFormBean.reporteSemana}"
+						   update=":tabGeneral:formReporteSemana:reporteTableSemana, :tabGeneral:formReporteSemana:montoSemana">
+					    </b:commandButton>
+					    </div>
+					    
+					    <b:inputText id="montoSemana" large-screen="one-third"
+							 render-attribute="true" label="Ganancias" disabled="true"
+				             display="inline-block" value="#{reporteFormBean.gananciasSemana}">
+				             	<f:convertNumber currencySymbol="$" type="currency"/>
+				             </b:inputText>
+						<br />
+				</div>
+
+
+				<b:dataTable value="#{reporteFormBean.facturasSemana}"
+					var="reporteSemana" id="reporteTableSemana"
+					headerClass="order-table-header"
+					rowClasses="order-table-add-row.order-table-event-row"
+					styleClass="table table-hover" searching="false" pdf="true">
+
+					<b:dataTableColumn style="text-align:center;width:20%">
+						<f:facet name="header"> Cliente</f:facet>
+							#{reporteSemana.client}
+							</b:dataTableColumn>
+
+					<b:dataTableColumn>
+						<f:facet name="header"> Vendedor</f:facet>
+							#{reporteSemana.vendedo}
+						</b:dataTableColumn>
+
+					<b:dataTableColumn>
+						<f:facet name="header"> Producto</f:facet>
+							#{reporteSemana.productoDatos.nombre}
+						</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header"> Precio</f:facet>
+							#{reporteSemana.productoDatos.precio}
+						</b:dataTableColumn>
+					
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header" style="background:#3d79db"> Precio compra</f:facet>
+							#{reporteSemana.productoDatos.precioCompra}
+					</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header"> Cantidad</f:facet>
+							#{reporteSemana.detalleDatos.cantidad}
+						</b:dataTableColumn>
+
+					<b:dataTableColumn style="text-align:center;width:10%">
+						<f:facet name="header"> Monto</f:facet>
+							#{reporteSemana.detalleDatos.monto}
+						</b:dataTableColumn>
+
+					<b:dataTableColumn>
+					<f:facet name="header"> Fecha</f:facet>
+					<h:outputText value="#{reporteSemana.fecha}">
+						<f:convertDateTime pattern = "dd-MMMMM-yyyy" />
+					</h:outputText>
+							
+					</b:dataTableColumn>
+
+				</b:dataTable>
+			</b:form>
+
+		</div>
+	</div>
+</ui:composition>
+</html>

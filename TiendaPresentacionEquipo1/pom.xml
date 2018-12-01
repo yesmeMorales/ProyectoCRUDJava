@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>UtmCentral2</groupId>
+    <artifactId>UtmCentral2</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>TiendaPresentacionEquipo1</groupId>
+  <artifactId>TiendaPresentacionEquipo1</artifactId>
+ 
+  <url>http://maven.apache.org</url>
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <repositories>
+  	<repository>
+  		<id>prime-repo</id>
+  		<name>Prime Repo</name>
+  		<url>http://repository.primefaces.org</url>
+  	</repository>
+  </repositories>
+  <dependencies>
+  	<dependency>
+  		<groupId>TiendaServiciosEquipo1</groupId>
+  		<artifactId>TiendaServiciosEquipo1</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<!-- Spring web -->
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-web</artifactId>
+  		<version>${spring.version}</version>
+  	</dependency>
+  	<!-- PrimeFaces -->
+  	<dependency>
+  		<groupId>org.primefaces</groupId>
+  		<artifactId>primefaces</artifactId>
+  		<version>${primefaces.version}</version>
+  	</dependency>
+  	
+  	<dependency>
+    	<groupId>net.bootsfaces</groupId>
+    	<artifactId>bootsfaces</artifactId>
+    	<version>1.2.0</version>
+    	<scope>compile</scope>
+	</dependency>
+  </dependencies>
+</project>

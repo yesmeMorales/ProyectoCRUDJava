@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+	template="/PROYECTO_pages/PROYECTO_secure/primefaces/commonLayout.xhtml">
+	
+	<ui:define name="content">
+		<div class="container">
+			
+			
+				<p:tabView id="tabGeneral"  style="width:1200px">
+					<p:tab title="Ventas">
+						<ui:insert name="ventas">
+							<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/ventas.xhtml"/>
+						</ui:insert>
+					</p:tab>
+				
+					<p:tab title="Productos"  >
+						<ui:insert name="producto" >
+						<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/productos2.xhtml"/>
+						</ui:insert>
+					</p:tab>
+
+					<p:tab title="Vendedores" >
+						<ui:insert name="vendedor" >
+						<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/vendedor2.xhtml"/>
+						</ui:insert>
+					</p:tab>
+					
+					<p:tab title="Clientes">
+						<ui:insert name="cliente" >
+						<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/cliente2.xhtml"/>
+						</ui:insert>
+					</p:tab>
+					
+					<p:tab title="Reporte">
+						<ui:insert name="reportes">
+							<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/reporte.xhtml"/>
+						</ui:insert>
+					</p:tab>
+				
+					
+					<p:tab title="Factura">
+						<ui:insert name="facturas">
+							<ui:include src="/PROYECTO_pages/PROYECTO_secure/primefaces/factura.xhtml"/>
+						</ui:insert>
+					</p:tab>
+				</p:tabView>
+			
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

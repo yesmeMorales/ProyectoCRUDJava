@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition
+	template="/PROYECTO_pages/PROYECTO_secure/primefaces/commonLayout.xhtml">
+	<ui:define name="content">
+		<div class="container">
+			<h3>Input mask</h3>
+			<h:form role="form" id="formAutoComplete">
+				<div class="form-group">
+					<label for="date">date</label>
+					<p:inputMask id="date" value="#{inputMaskBean.date}"
+						mask="9999-99-99" />
+				</div>
+
+				<div class="form-group">
+					<label for="date">phone</label>
+					<p:inputMask id="phone" value="#{inputMaskBean.phone}"
+						mask="(999)-999-99-99" />
+				</div>
+
+				<div class="form-group">
+					<label for="key">key</label>
+					<p:inputMask id="key" value="#{inputMaskBean.key}"
+						mask="aaaa-999-a9" />
+				</div>
+
+				<p:growl id="growlMensaje" showDetail="true" life="4000" />
+
+				<p:commandButton value="Submit"
+					onclick="PF('procesoDialog').show(); hola()"
+					actionListener="#{inputMaskBean.showMask}" update="growlMensaje"
+					oncomplete="adios()" />
+			</h:form>
+
+			<script>
+				function hola() {
+					console.log("Hola presionaste boton")
+				}
+
+				function adios() {
+					console.log("El boton termino ejecucion")
+				}
+			</script>
+			<p:dialog id="proceso" header="Espere por favor..."
+				widgetVar="procesoDialog" modal="true" minHeight="100">
+				<div class="container">
+					<div class="text-center">
+						<h:graphicImage library="images" name="home.png" />
+					</div>
+				</div>
+			</p:dialog>
+		</div>
+		<div class="container">
+			<br />
+			<h:link value="Regresar a index" 
+			outcome="/PROYECTO_pages/PROYECTO_secure/primefaces/index"
+			styleClass="btn btn-primary"/>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

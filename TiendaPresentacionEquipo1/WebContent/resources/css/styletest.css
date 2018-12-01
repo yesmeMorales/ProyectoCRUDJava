@@ -1,0 +1,36 @@
+@CHARSET "ISO-8859-1";
+.page-header{
+	background-color: #242a35;
+	color: #e0e2e5;
+	padding-right: 50px;
+    padding-left: 50px;
+    margin-top: 4px;
+}
+
+
+ 
+ 
+.ui-icon-check {
+    icon: glyphicon glyphicon-ok;
+}
+.ui-icon-close {
+    icon: glyphicon glyphicon-remove;
+}
+
+.ui-datatable .ui-datatable-header{
+	border-bottom:0px none;
+	background-color: #FFFFFF;
+	font-color: #FFFFFF
+}
+
+
+
+.ui-datatable .ui-row-editor{
+	background-color: #80858E
+}
+
+.ui-datatable .ui-row-editing .ui-cell-editor .ui-cell-editor-input{
+	display:block;
+	background-color: #099619;
+	font-color:#FFFFFF
+}

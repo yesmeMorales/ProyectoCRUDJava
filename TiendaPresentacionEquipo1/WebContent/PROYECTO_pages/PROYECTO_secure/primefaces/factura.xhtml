@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition>
+	<div class="container">
+		<div class="col-md-12">
+			<h:form role="form" id="formFactura">
+                
+				<div class="form-group">	
+					<h2>Generar facturas</h2>
+					<br/>
+					<div class="form-group">
+						<b:inputText id="name" label="Nombre cliente" value="#{facturaBean.facturaNombre}" 
+					    render-attribute='true' large-screen="one-third"/>
+					    <br/>
+					     <b:commandButton value="Consultar" look="primary" 
+					     update=":tabGeneral:formFactura:facturaTable" />
+					</div>
+				</div>
+
+				<b:dataTable id="facturaTable" var="item"
+					value="#{facturaBean.getClienteByNombre()}"
+					style="margin-bottom:20px" searching="false">
+					<b:dataTableColumn>
+							<f:facet name="header"> Cliente</f:facet>
+							#{item.client}
+					</b:dataTableColumn>
+
+						<b:dataTableColumn>
+							<f:facet name="header"> Vendedor</f:facet>
+							#{item.vendedo}
+						</b:dataTableColumn>
+
+						<b:dataTableColumn>
+							<f:facet name="header"> Fecha</f:facet>
+							<h:outputText value="#{item.fecha}">
+							<f:convertDateTime pattern = "dd-MMMMM-yyyy" />
+							</h:outputText>
+						</b:dataTableColumn>
+
+						<b:dataTableColumn style="text-align:center;width:15%">
+							<f:facet name="header">Monto total</f:facet>
+							#{item.montoTotal}
+						</b:dataTableColumn>
+						
+						<b:dataTableColumn style="text-align:center;width:10%">
+								<f:facet name="header">Generar</f:facet>
+						    	<b:commandButton actionListener="#{facturaBean.setFacturaId(item)}" icon="glyphicon glyphicon-file"
+						    	  update=":tabGeneral:formFactura:facturaCliente" />
+						</b:dataTableColumn>	
+				</b:dataTable>
+				<br/><br/>
+				
+				<h2>Datos de factura</h2>
+				
+				<b:dataTable id="facturaCliente" var="item2" searching="false"
+					value="#{facturaBean.mostrarFactura()}" pdf="true"
+					style="margin-bottom:20px" info="false">
+					   <b:column>
+					 		<f:facet name="header"> Productos</f:facet>
+							#{item2.productoDatos.nombre}
+						</b:column>
+
+						<b:column>
+							<f:facet name="header"> Cantidad</f:facet>
+							#{item2.detalleDatos.cantidad}
+						</b:column>
+						
+						<b:column style="text-align:center;width:15%">
+							<f:facet name="header">Precio Unitario</f:facet>
+							$ #{item2.productoDatos.precio}
+						</b:column>
+						
+						<b:column>
+							<f:facet name="header"> Fecha</f:facet>
+							<h:outputText value="#{item2.fecha}">
+							<f:convertDateTime pattern = "dd-MMMMM-yyyy" />
+							</h:outputText>
+						</b:column>
+						
+						<b:column style="text-align:center;width:15%">
+							<f:facet name="header">Monto total</f:facet>
+							$ #{item2.montoTotal}
+						</b:column>
+					   
+				</b:dataTable>
+				
+			</h:form>
+		</div>
+	</div>
+</ui:composition>
+</html>

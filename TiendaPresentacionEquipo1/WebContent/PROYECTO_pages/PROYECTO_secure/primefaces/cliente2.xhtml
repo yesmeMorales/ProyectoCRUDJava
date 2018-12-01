@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+	<ui:define name="header">
+		<div class="container">
+			<div class="page-header">
+				
+			</div>
+		</div>
+	</ui:define>
+	<!--se define la seccion a sustituir del layout-->
+	
+		<div class="container">
+			<div class="col-md-12">
+				<h:form role="form" id="formCliente">
+					
+					<div class="col-md-12">
+					<p:growl id="msgs" showDetail="true" />
+						
+						<p:dataTable id="tablaCliente"
+							value="#{clienteFormBean.listaCliente}" var="cliente" styleClass="table table-striped"
+							emptyMessage="No se encuentran datos" editable="true" style="margin-bottom:10px" showDetail="true" filteredValue="#{clienteFormBean.filteredClienteList}"
+							widgetVar="clienteWidget">
+							<f:facet name="header">
+								Tabla de Clientes
+							</f:facet>
+							
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="Búsqueda:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('clienteWidget').filter()" style="width:200px"
+										placeholder="Ingrese la búsqueda..." />
+								</p:outputPanel>
+							</f:facet>
+							
+							
+							<p:ajax event="rowEdit" listener="#{clienteFormBean.onRowEdit}"
+							update="tablaCliente,:tabGeneral:formCliente:msgs" />
+						    <p:ajax event="rowEditCancel" listener="#{clienteFormBean.onRowCancel}"
+							update="tablaCliente,:tabGeneral:formCliente:msgs" />
+							
+							
+							<p:column headerText="Id" style="text-align:center;width:10%">
+							<p:cellEditor>
+							    <f:facet name="output" >
+								<h:outputText value="#{cliente.idCliente}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText id="clienteInput" value="#{cliente.idCliente}"
+								    style="width:100%" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+						    
+						    <p:column headerText="Nombre" filterBy="#{cliente.nombre}"
+								filterStyle="display:none" filterMatchMode="contains" style="width:20%">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{cliente.nombre}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{cliente.nombre}" style="width:100%" 
+								    label="Nombre" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>		
+					
+						    <p:column headerText="Apellido" style="width:15%">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{cliente.apellido}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{cliente.apellido}" style="width:100%" 
+								    label="Apellido" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+					
+						   
+					
+						    <p:column headerText="Correo" style="width:20%">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{cliente.correo}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{cliente.correo}" style="width:100%" 
+								    label="Correo" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+							
+							<p:column headerText="EstadoCliente" style="text-align:center;width:15%">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{cliente.estadoCliente}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{cliente.estadoCliente}" style="width:100%" 
+								    label="EstadoCliente" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>
+						    
+						    <p:column headerText="Eliminar" style="text-align:center;width:10%">
+						    	<p:commandButton actionListener="#{clienteFormBean.eliminar(cliente)}" icon="ui-icon-trash"
+						    	update=":tabGeneral:formCliente:msgs,:tabGeneral:formCliente:tablaCliente"/>
+						    </p:column>	
+						    
+							<p:column headerText="Editar" style="text-align:center;width:8%;background-color:#80858E">
+							<p:rowEditor />
+						    </p:column>
+							
+							<f:facet name="footer">
+								<p:commandButton value="Agregar Cliente"
+									onclick="PF('dialogCliente').show();">
+								</p:commandButton>
+							</f:facet>
+						</p:dataTable>
+					</div>
+				</h:form>
+				<!--dialog de registro -->
+				<p:dialog id="dialogCliente" widgetVar="dialogCliente" modal="true"
+					resizable="false" header="Agregar Cliente" width="400">
+					<div class="row">
+						<div class="col-md-12">
+							<h:form role="form" id="formRegistroCliente">
+								<div class="form-group">
+									<label for="firstName">Nombre:</label>
+									<p:inputText id="firstName"
+										value="#{clienteFormBean.cliente.nombre}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un nombre valido">
+										<f:validateRegex pattern="^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$"/>
+										<f:validateLength minimum="4" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="nombreClientemessage" />
+									</p:inputText>
+									<p:message id="nombreClientemessage" for="firstName"
+									display="firstName"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+
+								<div class="form-group">
+									<label for="Apellido">Apellido:</label>
+									<p:inputText id="apellido"
+										value="#{clienteFormBean.cliente.apellido}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un apellido valido">
+										<f:validateRegex pattern="^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$"/>
+										<f:validateLength minimum="4" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="apellidoClientemessage" />
+									</p:inputText>
+									<p:message id="apellidoClientemessage" for="apellido"
+									display="apellido"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+								
+
+								<div class="form-group">
+									<label for="correo">Correo:</label>
+									<p:inputText id="correo"
+										value="#{clienteFormBean.cliente.correo}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un correo valido">
+										<f:validateRegex pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$"/>
+										<f:ajax event="blur" render="correoClientemessage" />
+									</p:inputText>
+									<p:message id="correoClientemessage" for="correo"
+									display="correo"
+									styleClass="text-danger">
+									</p:message>
+								</div>									
+									
+								
+								<p:commandButton id="btnRegistro" value="Registrar"
+									actionListener="#{clienteFormBean.registrar}"
+									update="formRegistroCliente,:tabGeneral:formCliente:tablaCliente,:tabGeneral:formCliente:msgs"
+									oncomplete="if (!args.validationFailed) PF('dialogCliente').hide();">
+								<!-- oncomplete="PF('dialogCliente').hide();"> -->	
+								</p:commandButton>
+							</h:form>
+						</div>
+					</div>
+				</p:dialog>
+			</div>
+		</div>
+		
+	
+</ui:composition>
+</html>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+	<ui:define name="header">
+		<div class="container">
+			<div class="page-header">
+				
+			</div>
+		</div>
+	</ui:define>
+	<!--se define la seccion a sustituir del layout-->
+	
+		<div class="container" >
+			<div class="col-md-12">
+				<h:form role="form" id="formVendedor" >
+					
+					<div class="col-md-12">
+					<p:growl id="msgs" showDetail="true" />
+						
+						<p:dataTable id="tablaVendedor"
+							value="#{vendedorFormBean.listaVendedor}" var="vendedor" styleClass="table table-striped"
+							emptyMessage="No se encuentran datos" editable="true" style="margin-bottom:10px" showDetail="true" filteredValue="#{vendedorFormBean.filteredVendedorList}"
+							widgetVar="vendedorWidget">
+							<f:facet name="header">
+								Tabla de Vendedores
+							</f:facet>
+							
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="Búsqueda:" />
+									<p:inputText id="globalFilter"
+										onkeyup="PF('vendedorWidget').filter()" style="width:200px"
+										placeholder="Ingrese la búsqueda..." />
+								</p:outputPanel>
+							</f:facet>
+							
+							<p:ajax event="rowEdit" listener="#{vendedorFormBean.onRowEdit}"
+							update="tablaVendedor,:tabGeneral:formVendedor:msgs" />
+						    <p:ajax event="rowEditCancel" listener="#{vendedorFormBean.onRowCancel}"
+							update="tablaVendedor,:tabGeneral:formVendedor:msgs" />
+							
+							
+							<p:column headerText="Id" style="text-align:center">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.idVendedor}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText id="vendedorInput" value="#{vendedor.idVendedor}"
+								    style="width:100%" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+						    
+						    <p:column headerText="Nombre" filterBy="#{vendedor.nombre}"
+								filterStyle="display:none" filterMatchMode="contains">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.nombre}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.nombre}" style="width:100%" 
+								    label="Nombre" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>		
+					
+						    <p:column headerText="Apellido" >
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.apellido}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.apellido}" style="width:100%" 
+								    label="Apellido" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+						    
+						    <p:column headerText="Username" >
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.username}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.username}" style="width:100%" 
+								    label="Username" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>
+					
+						    <p:column headerText="Contrasena" >
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.contrasena}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.contrasena}" style="width:100%" 
+								    label="Contrasena" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>		
+					
+						    <p:column headerText="Correo" style="text-align:center">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.correo}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.correo}" style="width:100%" 
+								    label="Correo" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+							
+							<p:column headerText="Administrador" style="text-align:center">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.administrador}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.administrador}" style="width:100%" 
+								    label="Administrador" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+						    
+						    <p:column headerText="EstadoVendedor" style="text-align:center">
+							<p:cellEditor>
+							    <f:facet name="output">
+								<h:outputText value="#{vendedor.estadoVendedor}" />
+							    </f:facet>
+					
+							    <f:facet name="input">
+								<h:inputText value="#{vendedor.estadoVendedor}" style="width:100%" 
+								    label="EstadoVendedor" />
+							    </f:facet>
+							</p:cellEditor>
+						    </p:column>	
+						    
+						    <p:column headerText="Eliminar" style="text-align:center">
+						    	<p:commandButton actionListener="#{vendedorFormBean.eliminar(vendedor)}" icon="ui-icon-trash"
+						    	update=":tabGeneral:formVendedor:msgs,:tabGeneral:formVendedor:tablaVendedor"/>
+						    </p:column>	
+						    
+							<p:column headerText="Editar" style="text-align:center;background-color:#80858E">
+							 
+							<p:rowEditor/>
+						    </p:column>
+							
+							<f:facet name="footer">
+								<p:commandButton value="Agregar Vendedor"
+									onclick="PF('dialogVendedor').show();">
+								</p:commandButton>
+							</f:facet>
+						</p:dataTable>
+					</div>
+				</h:form>
+				<!--dialog de registro -->
+				<p:dialog id="dialogVendedor" widgetVar="dialogVendedor" modal="true"
+					resizable="false" header="Agregar Vendedor" width="400">
+					<div class="row">
+						<div class="col-md-12">
+							<h:form role="form" id="formRegistroVendedor">
+								
+								<div class="form-group">
+								 
+									<label for="firstName">Nombre:</label>
+									
+									<p:inputText id="firstName"
+										value="#{vendedorFormBean.vendedor.nombre}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un nombre valido" onKeyPress="validateInput('[a-z]*')">
+										<f:validateRegex pattern="^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$"/>
+										<f:validateLength minimum="4" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="nombremessage" />
+									</p:inputText>
+									<p:message id="nombremessage" for="firstName" 
+									display="firstName"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+
+								<div class="form-group">
+									<label for="Apellido">Apellido:</label>
+									<p:inputText id="apellido"
+										value="#{vendedorFormBean.vendedor.apellido}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un apellido valido">
+										<f:validateRegex pattern="^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$"/>
+										<f:validateLength minimum="4" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="apellidomessage" />
+									</p:inputText>
+									<p:message id="apellidomessage" for="apellido"
+									display="apellido"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+								
+								<div class="form-group">
+									<label for="Username">Username:</label>
+									<p:inputText id="username"
+										value="#{vendedorFormBean.vendedor.username}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un username valido">
+										<f:validateRegex pattern="^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$"/>
+										<f:validateLength minimum="4" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="usernamemessage" />
+									</p:inputText>
+									<p:message id="usernamemessage" for="username"
+									display="username"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+								
+								<div class="form-group">
+									<label for="Apellido">Contraseña:</label>
+									<p:inputText id="contrasena"
+										value="#{vendedorFormBean.vendedor.contrasena}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese entre 6 y 15 caracteres">
+										
+										<f:validateLength minimum="6" maximum="15">
+										</f:validateLength>
+										<f:ajax event="blur" render="contrasenamessage" />
+									</p:inputText>
+									<p:message id="contrasenamessage" for="contrasena"
+									display="contrasena"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+
+								<div class="form-group">
+									<label for="correo">Correo:</label>
+									<p:inputText id="correo"
+										value="#{vendedorFormBean.vendedor.correo}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un correo valido">
+										<f:validateRegex pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$"/>
+										<f:ajax event="blur" render="mailmessage" />
+									</p:inputText>
+									<p:message id="mailmessage" for="correo"
+									display="correo"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+								<div class="form-group">
+									 
+								    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+								        <p:outputLabel for="administrador" value="Administrador: " />
+        								<p:selectBooleanCheckbox id="administrador" value="#{vendedorFormBean.vendedor.administrador}" />
+									
+								    </h:panelGrid>
+								</div>
+								
+								<p:commandButton id="btnRegistro" value="Registrar"
+									actionListener="#{vendedorFormBean.registrar}"
+									update="formRegistroVendedor,:tabGeneral:formVendedor:tablaVendedor,:tabGeneral:formVendedor:msgs"
+									oncomplete="if (!args.validationFailed) PF('dialogVendedor').hide();">
+								<!-- oncomplete="PF('dialogVendedor').hide();"> -->	
+								</p:commandButton>
+							</h:form>
+						</div>
+					</div>
+				</p:dialog>
+			</div>
+		</div>
+		
+	
+</ui:composition>
+</html>
+				

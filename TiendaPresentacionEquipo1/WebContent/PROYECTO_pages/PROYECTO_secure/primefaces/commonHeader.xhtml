@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+<ui:composition>
+	<div class="row">
+	<div class="col-md-1"></div>
+	<div class="container col-md-10">
+		<div class="page-header">
+			<h:form styleClass="form-inline">
+				<div class="form-group">
+					<h1>Gameland<small> Videojuegos y consolas</small></h1>
+				</div>
+				<div class="pull-right">
+					<p><strong>Usuario: #{nombre} #{apellido}</strong></p>
+					<p:commandButton id="logout" value="logout" actionListener="#{loginBean.logout}"
+      		         style="margin:10px;" oncomplete="logout(xhr, status, args)" />
+				</div>
+				<br/><br/>
+			</h:form>
+		</div>
+		</div>
+		<div class="col-md-1"></div>
+		</div>
+<script type="text/javascript">
+  //<![CDATA[
+  function logout(xhr, status, args) {
+    setTimeout(function() {
+      window.location = '../../../login.xhtml';
+    }, 500);
+  }
+//]]>
+</script>
+</ui:composition>
+</html>

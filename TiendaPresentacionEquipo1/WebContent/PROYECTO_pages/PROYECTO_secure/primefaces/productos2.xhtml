@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition>
+	<ui:define name="header">
+		<div class="container">
+			<div class="page-header">
+				
+			</div>
+		</div>
+	</ui:define>
+	<!--se define la seccion a sustituir del layout-->
+	
+		<div class="container">
+			<div class="col-md-12">
+				<h:form role="form" id="formProducto">
+					<p:growl id="msgs" showDetail="true" />
+					
+					<div class="col-md-12">
+					<p:dataTable id="productotabla" var="producto" value="#{productoFormBean.productoList}" paginator="true"
+						rows="10" editable="true" filteredValue="#{productoFormBean.filteredProductoList}"
+						widgetVar="productoWidget" showDetail="true" style="margin-bottom:10px"  emptyMessage="No se encontraron productos">
+			
+						<f:facet name="header">
+				    		Tabla de productos
+				    	</f:facet>
+			
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Búsqueda:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('productoWidget').filter()" style="width:200px"
+									placeholder="Ingrese la búsqueda..." />
+							</p:outputPanel>
+						</f:facet>
+			
+						<p:ajax event="rowEdit" listener="#{productoFormBean.onRowEdit}"
+							update="productotabla,:tabGeneral:formProducto:msgs,:tabGeneral:formVentas:ventastabla" />
+						<p:ajax event="rowEditCancel" listener="#{productoFormBean.onRowCancel}"
+							update="productotabla,:tabGeneral:formProducto:msgs,:tabGeneral:formVentas:ventastabla" />
+			
+						<p:column headerText="Nombre" filterBy="#{producto.nombre}"
+							filterStyle="display:none" filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{producto.nombre}" />
+								</f:facet>
+			
+								<f:facet name="input">
+									<h:inputText value="#{producto.nombre}" style="width:100%"
+										label="Nombre" />
+								</f:facet>
+							</p:cellEditor>
+			
+						</p:column>
+			
+						<p:column headerText="Precio" filterBy="#{producto.precio}"
+							filterStyle="display:none" filterMatchMode="contains" style="text-align:center;width:15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{producto.precio}">
+										<f:convertNumber currencySymbol="$" type="currency" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{producto.precio}" style="width:100%"
+										label="Precio" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="PrecioCompra" filterBy="#{producto.precioCompra}"
+							filterStyle="display:none" filterMatchMode="contains" style="text-align:center;width:15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{producto.precioCompra}">
+										<f:convertNumber currencySymbol="$" type="currency" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{producto.precioCompra}" style="width:100%"
+										label="PrecioCompra" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						 
+			
+						<p:column headerText="Stock" filterBy="#{producto.stock}"
+							filterStyle="display:none" filterMatchMode="contains" style="text-align:center;width:15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{producto.stock}" />
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{producto.stock}" style="width:100%"
+										label="Stock" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						<p:column headerText="EstadoProducto" filterBy="#{producto.estadoProducto}"
+							filterStyle="display:none" filterMatchMode="contains" style="text-align:center;width:15%">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{producto.estadoProducto}" />
+								</f:facet>
+								<f:facet name="input">
+									<h:inputText value="#{producto.estadoProducto}" style="width:100%"
+										label="EstadoProducto" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						
+						
+						
+						<p:column headerText="Eliminar" style="text-align:center;width:10%">
+						    	<p:commandButton actionListener="#{productoFormBean.eliminar(producto)}" icon="ui-icon-trash"
+						    	update="productotabla,:tabGeneral:formProducto:msgs,:tabGeneral:formVentas:ventastabla"/>
+						</p:column>	
+						
+						<p:column headerText="Editar" style="text-align:center;width:8%;background-color:#80858E">
+							<p:rowEditor />
+						</p:column>
+						
+						<f:facet name="footer">
+								<p:commandButton value="Agregar Producto"
+									onclick="PF('dialogProducto').show();">
+								</p:commandButton>
+						</f:facet>
+			
+					</p:dataTable>
+					</div>
+				</h:form>
+				<!--dialog de registro -->
+				<p:dialog id="dialogProducto" widgetVar="dialogProducto" modal="true"
+					resizable="false" header="Agregar Producto" width="400">
+					<div class="row">
+						<div class="col-md-12">
+							<h:form role="form" id="formRegistroProducto">
+								<div class="form-group">
+									<label for="firstName">Nombre:</label>
+									<p:inputText id="firstName"
+										value="#{productoFormBean.producto.nombre}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un nombre valido">
+										<f:validateRegex pattern="^[0-9a-zA-Z]+$"/>
+										
+										<f:validateLength minimum="3" maximum="100">
+										</f:validateLength>
+										<f:ajax event="blur" render="nombreProductomessage" />
+									</p:inputText>
+									<p:message id="nombreProductomessage" for="firstName" 
+									display="firstName"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+
+								<div class="form-group">
+									<label for="Precio">Precio:</label>
+									<p:inputText id="precio"
+										value="#{productoFormBean.producto.precio}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un precio valido entre 2 y 10 digitos">
+										
+										<f:validateLength minimum="2" maximum="10">
+										</f:validateLength>
+										<f:ajax event="blur" render="precioProductomessage" />
+									</p:inputText>
+									<p:message for="precio" id="precioProductomessage" display="precio"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+								
+								
+								<div class="form-group">
+									<label for="PrecioCompra">Precio Compra:</label>
+									<p:inputText id="precioCompra"
+										value="#{productoFormBean.producto.precioCompra}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un precio de compra valido entre 2 y 10 digitos">
+										
+										<f:validateLength minimum="2" maximum="10">
+										</f:validateLength>
+										<f:ajax event="blur" render="precioCompramessage" />
+									</p:inputText>
+									<p:message for="precioCompra" id="precioCompramessage" display="precioCompra"
+									styleClass="text-danger">
+									</p:message>
+								</div>
+
+								<div class="form-group">
+									<label for="stock">Stock:</label>
+									<p:inputText id="stock"
+										value="#{productoFormBean.producto.stock}"
+										styleClass="form-control" required="true"
+										requiredMessage="Campo requerido"
+										validatorMessage="Ingrese un stock valido entre 1 y 10 digitos"
+										>
+									
+									<f:validateLength minimum="1" maximum="10">
+									</f:validateLength>
+									<f:ajax event="blur" render="stockmessage" />
+									</p:inputText>
+									<p:message for="stock" id="stockmessage" display="stock"
+									styleClass="text-danger">
+									</p:message>
+								</div>									
+									
+								
+								<p:commandButton id="btnRegistro" value="Registrar"
+									actionListener="#{productoFormBean.registrar}"
+									update="formRegistroProducto,:tabGeneral:formProducto:productotabla,:tabGeneral:formProducto:msgs,:tabGeneral:formVentas:ventastabla"
+									oncomplete="if (!args.validationFailed) PF('dialogProducto').hide();">
+									
+								</p:commandButton>
+							</h:form>
+						</div>
+					</div>
+				</p:dialog>
+			</div>
+		</div>
+		
+	
+</ui:composition>
+</html>
